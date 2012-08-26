@@ -1,4 +1,6 @@
 # encoding: utf-8
+require 'main_report_dialog'
+
 class PcFooter < FXHorizontalFrame
 
     def initialize(parent)
@@ -38,7 +40,7 @@ class PcFooter < FXHorizontalFrame
 
         btn_main_report.connect(SEL_COMMAND) do |sender, sel, event|
             puts 'event'
-            p = PreferencesDialog.new(parent)
+            p = MainReportDialog.new(parent)
             p.create
             p.show
         end

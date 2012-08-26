@@ -1,7 +1,7 @@
 
 class ClientPC < FXVerticalFrame
 
-    WIDTH = 120
+    WIDTH = 100
 
     def initialize(parent)
         super(parent, :width => WIDTH)

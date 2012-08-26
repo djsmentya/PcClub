@@ -13,6 +13,7 @@ require 'pc_stack'
 require 'pc_scroll_window'
 require 'pc_footer'
 
+
 #    models
 #require 'computer_log'
 #require 'computer'
@@ -63,19 +64,6 @@ end
     #end
 #end
 
-class PreferencesDialog < FXDialogBox
-    def initialize(owner)
-        super(owner, "Preferences" , DECOR_ALL, :width => 500 , :height => 300)
-
-        on_init
-    end
-
-    def on_init
-        table = FXTable.new(self, :opts => LAYOUT_FILL)
-        table.setTableSize(10, 10)
-    end
-end
-
 class Clock < FXLabel
 
     def initialize(parent)
@@ -85,7 +73,6 @@ class Clock < FXLabel
 
 
 end
-
 
 
 
