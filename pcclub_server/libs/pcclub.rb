@@ -4,7 +4,7 @@ $LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__)))
 $LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__),'models'))
 
 require 'fox16'
-
+require 'eventmachine'
 include Fox
 
 require 'active_record'
@@ -12,6 +12,7 @@ require 'active_record'
 require 'pc_stack'
 require 'pc_scroll_window'
 require 'pc_footer'
+require 'pc_server'
 
 
 #    models
@@ -30,7 +31,7 @@ class PcClub < FXMainWindow
 
         #:TODO remove tests
         (1..13).each do
-           scroll.pc_stack.add_pc
+            scroll.pc_stack.add_pc
         end
 
         pc_footer = PcFooter.new(main)
@@ -40,29 +41,24 @@ class PcClub < FXMainWindow
 
     def create
         super
+        @thread = Thread.new do
+            puts ' Thread serer'
+            EventMachine::run {
+                EventMachine::start_server "127.0.0.1", 8081, PcServer
+                puts 'running echo server on 8081'
+            }
+        end
         show(PLACEMENT_SCREEN)
+    end
+
+    def onDestroy
+        EventMachine::stop_server
+        super
+
     end
 
 end
 
-#require 'gserver'
-
-#class PcServer < GServer
-
-    ##TODO порт должен коденфигурироватся пользователем а не жестко прописыватся в коде
-    #PORT = 1488
-
-    #HOST = 'localhost'
-
-    #server = TCPServer.open(HOST, PORT)   # Socket to listen on port 2000
-    #loop do                        # Servers run forever
-        #Thread.start(server.accept) do |client|
-            #client.puts(Time.now.ctime) # Send the time to the client
-            #client.puts "Closing the connection. Bye!"
-            #client.close                # Disconnect from the client
-        #end
-    #end
-#end
 
 class Clock < FXLabel
 
@@ -71,16 +67,28 @@ class Clock < FXLabel
         super(parent, t.strftime('%H:%M'), :opts => JUSTIFY_RIGHT|JUSTIFY_BOTTOM)
     end
 
-
 end
 
 
+#@threads = []
 
-if __FILE__ == $0
-    FXApp.new do |app|
-        main_window = PcClub.new(app)
-        app.create
-        app.run
+#@threads << Thread.new do
+
+    if __FILE__ == $0
+        FXApp.new do |app|
+            main_window = PcClub.new(app)
+            app.create
+            app.run
+        end
     end
-end
+#end
 
+#@threads << Thread.new do
+    #puts ' Thread serer'
+    #EventMachine::run {
+        #EventMachine::start_server "127.0.0.1", 8081, PcServer
+        #puts 'running echo server on 8081'
+    #}
+#end
+
+#@threads.each { |element| element.join }
