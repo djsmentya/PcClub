@@ -14,6 +14,8 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.2)
     builder (3.0.0)
+    eventmachine (1.0.0.rc.4)
+    eventmachine (1.0.0.rc.4-x86-mingw32)
     fxruby (1.6.25)
     fxruby (1.6.25-x86-mingw32)
     i18n (0.6.0)
@@ -28,5 +30,6 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  eventmachine (= 1.0.0.rc.4)
   fxruby
   sqlite3

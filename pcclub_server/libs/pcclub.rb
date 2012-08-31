@@ -1,18 +1,8 @@
 # encoding: utf-8
 
-$LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__)))
-$LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__),'models'))
-
-require 'fox16'
-require 'eventmachine'
-include Fox
-
-require 'active_record'
-
 require 'pc_stack'
 require 'pc_scroll_window'
 require 'pc_footer'
-require 'pc_server'
 
 
 #    models
@@ -41,21 +31,9 @@ class PcClub < FXMainWindow
 
     def create
         super
-        @thread = Thread.new do
-            puts ' Thread serer'
-            EventMachine::run {
-                EventMachine::start_server "127.0.0.1", 8081, PcServer
-                puts 'running echo server on 8081'
-            }
-        end
         show(PLACEMENT_SCREEN)
     end
 
-    def onDestroy
-        EventMachine::stop_server
-        super
-
-    end
 
 end
 
@@ -70,25 +48,4 @@ class Clock < FXLabel
 end
 
 
-#@threads = []
 
-#@threads << Thread.new do
-
-    if __FILE__ == $0
-        FXApp.new do |app|
-            main_window = PcClub.new(app)
-            app.create
-            app.run
-        end
-    end
-#end
-
-#@threads << Thread.new do
-    #puts ' Thread serer'
-    #EventMachine::run {
-        #EventMachine::start_server "127.0.0.1", 8081, PcServer
-        #puts 'running echo server on 8081'
-    #}
-#end
-
-#@threads.each { |element| element.join }
